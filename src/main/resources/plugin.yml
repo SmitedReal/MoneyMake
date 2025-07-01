@@ -1,0 +1,9 @@
+name: MoneyMake
+version: '0.1'
+main: smitedreal.moneyMake.MoneyMake
+api-version: '1.21'
+authors: [ SmiteGee ]
+commands:
+  sell:
+    description: Sell items for money
+    permission-message: You do not have permission to sell items.
