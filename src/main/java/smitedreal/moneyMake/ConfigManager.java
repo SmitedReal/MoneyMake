@@ -3,7 +3,9 @@ package smitedreal.moneyMake;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 
@@ -26,12 +28,18 @@ public class ConfigManager {
             if (file.createNewFile()) {
                 // File didnt exist so write default config
                 Bukkit.getLogger().info("Created new config file with default gold price: " + goldPrice);
-                // make the gold price
-                Files.writeString(file.toPath(), "gold_price: 1.0");
-                goldPrice = 1.0f;
-                // gold apple and enchanted golden apple prices
-                Files.writeString(file.toPath(), "gap_price: 8.5");
-                Files.writeString(file.toPath(), "egap_price: 1.0");
+                // write to the file
+
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                    writer.write("gold_price: 1.0");
+                    writer.newLine();
+                    writer.write("gap_price: 8.0");
+                    writer.newLine();
+                    writer.write("egap_price: 72.0");
+                    System.out.println("File written successfully.");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             } else {
                 // File exists so read the gold price
                 String content = Files.readString(file.toPath());
