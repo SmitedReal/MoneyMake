@@ -2,7 +2,6 @@ package smitedreal.moneyMake;
 
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -15,23 +14,19 @@ public final class MoneyMake extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        new ConfigManager().ConfigWork();
         Bukkit.getPluginManager().registerEvents(new Prices(), this);
-
         if (!setupEconomy()) {
             getLogger().severe("Vault not found or no economy plugin found!");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
         }
         getCommand("sell").setExecutor(new Sell());
         getCommand("sell").setTabCompleter(new tabcompleter());
     }
 
     private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
-        }
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
+            getLogger().severe("ECONOMY CLASS not found");
             return false;
         }
         economy = rsp.getProvider();

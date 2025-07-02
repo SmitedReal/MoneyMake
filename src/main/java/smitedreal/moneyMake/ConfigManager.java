@@ -1,5 +1,8 @@
 package smitedreal.moneyMake;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,7 +12,7 @@ public class ConfigManager {
     public void ConfigWork() {
         try {
             // Create the folder if it doesnt exist
-            File folder = new File("moneymake");
+            File folder = new File("plugins/moneymake");
             if (!folder.exists()) {
                 folder.mkdirs();
             }
@@ -19,6 +22,7 @@ public class ConfigManager {
 
             if (file.createNewFile()) {
                 // File didnt exist so write default config
+                Bukkit.getLogger().warning("No file found, creating one, setting the price to default: 1.0");
                 Files.writeString(file.toPath(), "gold_price: 1.0");
                 goldPrice = 1.0f;
             } else {
@@ -26,9 +30,8 @@ public class ConfigManager {
                 String content = Files.readString(file.toPath());
                 String price = content.split(":")[1].trim();
                 goldPrice = Float.parseFloat(price);
+                Bukkit.getLogger().info(ChatColor.AQUA+"Loaded gold price from config: " + goldPrice);
             }
-
-            System.out.println("Gold price: " + goldPrice);
         } catch (IOException | NumberFormatException e) {
             e.printStackTrace();
         }
