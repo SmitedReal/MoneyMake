@@ -5,5 +5,5 @@ api-version: '1.21'
 authors: [ SmiteGee ]
 commands:
   sell:
-    description: Sell items for money
+    description: Sell gold stuff for in-game money.
     permission-message: You do not have permission to sell items.

@@ -12,7 +12,8 @@ import org.bukkit.inventory.ItemStack;
 public class Sell implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        String prefix = ChatColor.BOLD +""+ChatColor.YELLOW+"[Money Make]: "+ChatColor.RESET; // prefix for messages
+        String prefix = ChatColor.YELLOW+""+ChatColor.BOLD+"[Money Make]: "+ChatColor.RESET; // prefix for messages
+        String ver = "Running Version: 1.1.0"; // version of the plugin
         int z = 0;
         // If command sender not a player, dont do anything
         if (!(sender instanceof Player)) {
@@ -29,14 +30,40 @@ public class Sell implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("hand")) {
                     // item in main hand
                     ItemStack item = player.getInventory().getItemInMainHand();
-                    // check if player is holding an item
+                    // check if player is holding gold
                     if (item.getType() == Material.GOLD_INGOT) {
                         for (int i = 0; i < item.getAmount(); i++) {
                             MoneyMake.economy.depositPlayer(player, ConfigManager.goldPrice); // deposit 1 money to player per gold
                         }
                         item.setAmount(-1);
                         player.sendMessage(prefix+"You sold the gold in your hand.");
-                    } else {
+                    } else if (item.getType().equals(Material.GOLD_NUGGET)) {
+                        for (int i = 0; i < item.getAmount(); i++) {
+                            MoneyMake.economy.depositPlayer(player, ConfigManager.goldPrice / 9); // deposit 1 money to player per gold nugget
+                        }
+                        item.setAmount(-1);
+                        player.sendMessage(prefix+"You sold the gold nugget in your hand.");
+                    } else if (item.getType().equals(Material.GOLD_BLOCK)) {
+                        for (int i = 0; i < item.getAmount(); i++) {
+                            MoneyMake.economy.depositPlayer(player, ConfigManager.goldPrice * 9); // deposit 9 money to player per gold block
+                        }
+                        item.setAmount(-1);
+                        player.sendMessage(prefix+"You sold the gold block in your hand.");
+                    } else if (item.getType().equals(Material.GOLDEN_APPLE)) {
+                        for (int i = 0; i < item.getAmount(); i++) {
+                            MoneyMake.economy.depositPlayer(player, ConfigManager.gapPrice); // deposit 8 money to player per golden apple
+                        }
+                        item.setAmount(-1);
+                        player.sendMessage(prefix+"You sold the golden apple in your hand.");
+                    } else if (item.getType().equals(Material.ENCHANTED_GOLDEN_APPLE)) {
+                        for (int i = 0; i < item.getAmount(); i++) {
+                            MoneyMake.economy.depositPlayer(player, ConfigManager.egapPrice); // deposit 72 money to player per enchanted golden apple
+                        }
+                        item.setAmount(-1);
+                        player.sendMessage(prefix+"You sold the enchanted golden apple in your hand.");
+
+                    }
+                    else {
                         player.sendMessage(prefix+ChatColor.RED+"You are not holding any gold.");
                     }
                 } else if (args[0].equalsIgnoreCase("all")) {
@@ -54,7 +81,33 @@ public class Sell implements CommandExecutor {
                             }
                             item.setAmount(-1);
 
-                        } else {
+                        } else if (item.getType().equals(Material.GOLD_NUGGET)) {
+                            for (int y = 0; y < item.getAmount(); y++) {
+                                z++;
+                                MoneyMake.economy.depositPlayer(player, ConfigManager.goldPrice / 9); // deposit 1 money to player per gold nugget
+                            }
+                            item.setAmount(-1);
+                        } else if (item.getType().equals(Material.GOLD_BLOCK)) {
+                            for (int y = 0; y < item.getAmount(); y++) {
+                                z += 9;
+                                MoneyMake.economy.depositPlayer(player, ConfigManager.goldPrice * 9); // deposit 9 money to player per gold block
+                            }
+                            item.setAmount(-1);
+                        }
+                        else if (item.getType().equals(Material.GOLDEN_APPLE)) {
+                            for (int y = 0; y < item.getAmount(); y++) {
+                                z += 8;
+                                MoneyMake.economy.depositPlayer(player, ConfigManager.gapPrice); // deposit 8 money to player per golden apple
+                            }
+                            item.setAmount(-1);
+                        } else if (item.getType().equals(Material.ENCHANTED_GOLDEN_APPLE)) {
+                            for (int y = 0; y < item.getAmount(); y++) {
+                                z += 72;
+                                MoneyMake.economy.depositPlayer(player, ConfigManager.egapPrice); // deposit 72 money to player per enchanted golden apple
+                            }
+                            item.setAmount(-1);
+                        }
+                        else {
                             // if item is not gold, do nothing
                             continue;
                         }
@@ -70,6 +123,12 @@ public class Sell implements CommandExecutor {
                     // if its not anything else than hand of all, its wrong
                     sender.sendMessage(prefix+ChatColor.RED+"Invalid argument. Use 'hand' or 'all'.");
                 }
+            } else if (args[0].equalsIgnoreCase("ver")) {
+                // if args 0 is ver, send version
+                sender.sendMessage(prefix+ChatColor.GREEN+ver);
+            } else {
+                // if args 0 is not hand or all or ver, send usage
+                sender.sendMessage(prefix+ChatColor.RED+"Usage: /sell <hand|all|ver>");
             }
             return true;
         }

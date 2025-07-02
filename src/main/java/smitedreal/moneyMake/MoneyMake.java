@@ -6,16 +6,15 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class MoneyMake extends JavaPlugin {
-/*
-    Hey, if you are reading this source code, this plugin just simply turns gold into in-game money using Vault
-*/
 
     public static Economy economy = null;
 
     @Override
     public void onEnable() {
+        // Register commands and setup config
         new ConfigManager().ConfigWork();
         Bukkit.getPluginManager().registerEvents(new Prices(), this);
+        //check if economy is set up
         if (!setupEconomy()) {
             getLogger().severe("Vault not found or no economy plugin found!");
         }
@@ -24,9 +23,11 @@ public final class MoneyMake extends JavaPlugin {
     }
 
     private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
-            getLogger().severe("ECONOMY CLASS not found");
             return false;
         }
         economy = rsp.getProvider();
