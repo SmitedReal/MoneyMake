@@ -1,5 +1,5 @@
 name: MoneyMake
-version: '0.1'
+version: '1.2'
 main: smitedreal.moneyMake.MoneyMake
 api-version: '1.21'
 authors: [ SmiteGee ]
