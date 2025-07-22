@@ -12,11 +12,13 @@ public final class MoneyMake extends JavaPlugin {
     @Override
     public void onEnable() {
         // Register commands and setup config
-        new ConfigManager().ConfigWork();
+        ConfigManager.ConfigWork();
         Bukkit.getPluginManager().registerEvents(new Prices(), this);
         //check if economy is set up
         if (!setupEconomy()) {
             getLogger().severe("Vault not found or no economy plugin found!");
+            getLogger().severe("Check the dependencies of the MoneyMake plugin, or add another economy plugin!");
+            throw new NullPointerException();
         }
         getCommand("sell").setExecutor(new Sell());
         getCommand("sell").setTabCompleter(new tabcompleter());
@@ -36,8 +38,5 @@ public final class MoneyMake extends JavaPlugin {
 
 
     @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-    }
-    }
-
+    public void onDisable() {}
+}

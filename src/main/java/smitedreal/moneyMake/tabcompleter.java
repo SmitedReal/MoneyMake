@@ -12,6 +12,7 @@ public class tabcompleter implements TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
         return List.of("hand", "all", "ver");
+
         }
         else {
         return List.of("");
