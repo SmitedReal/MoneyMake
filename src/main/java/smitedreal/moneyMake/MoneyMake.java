@@ -4,6 +4,8 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import smitedreal.moneyMake.Goverment.SendToGoverment;
+import smitedreal.moneyMake.Goverment.TotalMoney;
 
 public final class MoneyMake extends JavaPlugin {
 
@@ -13,6 +15,7 @@ public final class MoneyMake extends JavaPlugin {
     public void onEnable() {
         // Register commands and setup config
         ConfigManager.ConfigWork();
+        TotalMoney.SetupTM();
         Bukkit.getPluginManager().registerEvents(new Prices(), this);
         //check if economy is set up
         if (!setupEconomy()) {
@@ -22,6 +25,7 @@ public final class MoneyMake extends JavaPlugin {
         }
         getCommand("sell").setExecutor(new Sell());
         getCommand("sell").setTabCompleter(new tabcompleter());
+        getCommand("sendtogov").setExecutor(new SendToGoverment());
     }
 
     private boolean setupEconomy() {

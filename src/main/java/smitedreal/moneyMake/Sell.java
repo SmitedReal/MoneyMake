@@ -10,10 +10,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class Sell implements CommandExecutor {
+    public static final String prefix = ChatColor.YELLOW+""+ChatColor.BOLD+"[Money Make]: "+ChatColor.RESET; // prefix for messages
+    public static final String ver = "Running Version: 1.3"; // version of the plugin
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        String prefix = ChatColor.YELLOW+""+ChatColor.BOLD+"[Money Make]: "+ChatColor.RESET; // prefix for messages
-        String ver = "Running Version: 1.2"; // version of the plugin
         int z = 0;
         // If command sender not a player, dont do anything
         if (!(sender instanceof Player)) {
@@ -23,9 +23,7 @@ public class Sell implements CommandExecutor {
             //define player
             Player player = (Player) sender;
             //if no args, send usage
-            if (args.length == 0) {
-                sender.sendMessage(prefix+ChatColor.RED+"Usage: /sell <hand|all>");
-            } else if (args.length == 1) {
+            if (args.length == 1) {
                 // if args 0 is hand of all
                 if (args[0].equalsIgnoreCase("hand")) {
                     // item in main hand
